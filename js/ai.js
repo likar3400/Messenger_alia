@@ -113,3 +113,11 @@ function clearAiHistory() {
 function getContextWindow(cid) {
   return S.chatThemes?.[cid]?.contextWindow ?? 12;
 }
+
+function setContextWindow(cid, size) {
+  if (!S.chatThemes)      S.chatThemes = {};
+  if (!S.chatThemes[cid]) S.chatThemes[cid] = {};
+  S.chatThemes[cid].contextWindow = Math.max(4, Math.min(20, Number(size)));
+  save();
+  showToast(`Контекст AI: ${S.chatThemes[cid].contextWindow} повідомлень`);
+}

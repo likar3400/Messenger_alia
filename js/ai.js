@@ -109,3 +109,29 @@ function clearAiHistory() {
   renderCL();
   showToast('Контекст AI очищено');
 }
+
+function getContextWindow(cid) {
+  return S.chatThemes?.[cid]?.contextWindow ?? 12;
+}
+
+function setContextWindow(cid, size) {
+  if (!S.chatThemes)      S.chatThemes = {};
+  if (!S.chatThemes[cid]) S.chatThemes[cid] = {};
+  S.chatThemes[cid].contextWindow = Math.max(4, Math.min(20, Number(size)));
+  save();
+  showToast(`Контекст AI: ${S.chatThemes[cid].contextWindow} повідомлень`);
+}
+
+function clearAiContext() {
+  if (!S.activeId) return;
+  const msgs = S.messages[S.activeId] || [];
+  msgs.push({
+    id: Date.now(), from: 'system',
+    text: '--- контекст очищено ---',
+    ts: Date.now(), reactions: {},
+  });
+  S.messages[S.activeId] = msgs;
+  save();
+  renderMsgs();
+  showToast('Контекст AI очищено');
+}

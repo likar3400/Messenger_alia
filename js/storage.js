@@ -71,3 +71,18 @@ function exportData() {
   URL.revokeObjectURL(a.href);
   showToast('Дані експортовано');
 }
+
+function importData(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      S = { ...S, ...JSON.parse(e.target.result) };
+      save();
+      location.reload();
+    } catch {
+      showToast('Невірний формат файлу');
+    }
+  };
+  reader.readAsText(file);
+}

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delulu Chat 💕</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+
+<!-- ═══════ SIDEBAR ═══════ -->
+<div id="sb">
+  <div class="sb-top">
+    <div class="logo-row">
+      <img class="logo-img" id="logo-img" alt=""/>
+      <div class="logo-fb" id="logo-fb">💕</div>
+      <span class="logo-txt">Delulu Chat ✦</span>
+      <div class="sb-actions">
+        <button class="sab" id="theme-btn" title="Тема" onclick="toggleThemePanel()">🌙</button>
+        <button class="sab" id="sort-btn"  title="Сортування" onclick="toggleSortPanel()">↕️</button>
+        <button class="sab" id="notif-btn" title="Сповіщення" onclick="toggleNotifications()">🔕</button>
+        <button class="sab" id="sound-btn" title="Звук" onclick="toggleSound()">🔊</button>
+        <button class="sab" title="Збережені повідомлення" onclick="openBookmarksPanel()">⭐</button>
+        <button class="sab" title="Клавіатурні скорочення" onclick="openShortcutsHelp()">⌨️</button>
+      </div>
+    </div>
+    <div id="theme-panel" style="display:none"></div>
+    <div id="sort-panel"  style="display:none"></div>
+    <div class="sw">
+      <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="src-inp" placeholder="Пошук контактів..."/>
+    </div>
+  </div>
+
+  <div class="my-prof" onclick="openProfModal()">
+    <div class="av" id="my-av" style="width:36px;height:36px;font-size:12px"></div>
+    <div class="prof-info">
+      <div class="prof-name"   id="my-name-lbl">Мій профіль</div>
+      <div class="prof-status" id="my-st-lbl">Встановити статус...</div>
+    </div>
+    <span class="prof-edit">✏️</span>
+  </div>
+
+  <div id="api-banner" onclick="openApiModal()">
+    <svg viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    <span id="ab-txt"><b>API ключ</b> — підключити Anthropic</span>
+  </div>
+
+  <div id="cl"></div>
+
+  <div class="data-btns">
+    <button class="data-btn" onclick="exportData()">Експорт</button>
+    <label class="data-btn" style="text-align:center;cursor:pointer">Імпорт<input type="file" accept=".json" style="display:none" onchange="importData(this.files[0])"/></label>
+    <button class="data-btn" onclick="clearAll()" style="color:var(--danger)">Скинути</button>
+  </div>
+  <button class="new-btn" onclick="openNewModal()">
+    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Новий чат
+  </button>
+</div>
+
+<!-- ═══════ MAIN PANEL ═══════ -->
+<div id="cm-main">
+  <div id="es">
+    <div class="ee">💕</div>
+    <h2>Delulu is the solulu ✨</h2>
+    <p>Обери чат зліва або створи новий — і починай спілкуватись!</p>
+    <div class="es-hints">
+      <span>Ctrl+N — новий чат</span>
+      <span>Ctrl+K — пошук</span>
+      <span>Ctrl+B — збережені</span>
+      <span>↑↓ — навігація між чатами</span>
+    </div>
+  </div>
+
+  <div id="cv" style="display:none;flex-direction:column;height:100%;overflow:hidden">
+    <div class="ch">
+      <div class="av" id="h-av"></div>
+      <div class="hi">
+        <div class="hn" id="h-nm" onclick="openRenameModal()" title="Натисни для перейменування">Чат</div>
+        <div class="hs" id="h-st"></div>
+      </div>
+      <div class="msg-search-wrap">
+        <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="msg-search-inp" placeholder="Пошук у всіх чатах... (Ctrl+K)"/>
+      </div>
+      <div class="ha">
+        <div id="chat-accent-ind" class="accent-ind" onclick="openChatThemeModal()" title="Тема чату"></div>
+        <button class="ib" title="Тема чату" onclick="openChatThemeModal()">🎨</button>
+        <button class="ib" title="Голосовий дзвінок" onclick="startCall()">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        </button>
+        <button class="ib" title="Відеодзвінок" onclick="startCall(true)">
+          <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </button>
+        <button class="ib danger" title="Видалити чат" onclick="delChat()">
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+        </button>
+        <button class="ib" title="Статистика чату" onclick="openStatsPanel()">
+          <svg viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="pin-bar">
+      📌 <span id="pin-txt"></span>
+      <button onclick="clearPin()">×</button>
+    </div>
+
+    <div class="mw" id="mw"></div>
+
+    <div id="draft-ind" style="display:none;padding:2px 16px;font-size:11px;color:var(--acc)">
+      ✏️ Чернетка відновлена
+    </div>
+
+    <div class="ia">
+      <div class="iw">
+        <button class="iab" title="Прикріпити файл" onclick="trigFile()">
+          <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66L9.41 17.41a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+        </button>
+        <input type="file" id="fi" style="display:none" onchange="handleFile(this)"
+               accept="image/*,.pdf,.doc,.docx,.txt,.zip,.js,.py"/>
+        <button id="voice-btn" title="Голосове повідомлення (клік — старт/стоп)" onclick="toggleRecording()">🎤</button>
+        <span id="voice-timer">00:00</span>
+        <textarea id="msg-inp" rows="1" placeholder="Написати... **жирний** *курсив* `код` ~~перекреслений~~"></textarea>
+        <button class="iab" title="Емодзі" onclick="togEp()">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </button>
+        <div id="ep"></div>
+      </div>
+      <button class="sb2" onclick="send()" title="Надіслати (Enter)">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ STATS PANEL ═══════ -->
+<div id="stats-panel">
+  <div class="stats-head">
+    <span>Статистика чату</span>
+    <button onclick="closeStatsPanel()">✕</button>
+  </div>
+  <div id="stats-body"></div>
+</div>
+
+<!-- ═══════ BOOKMARKS PANEL ═══════ -->
+<div id="bk-panel">
+  <div class="bk-head">
+    <span>⭐ Збережені повідомлення</span>
+    <button onclick="closeBookmarksPanel()">✕</button>
+  </div>
+  <div id="bk-list"></div>
+</div>
+
+<!-- ═══════ SEARCH RESULTS PANEL ═══════ -->
+<div id="search-panel">
+  <div class="sr-head">
+    <span>🔍 Результати пошуку</span>
+    <span id="search-count" style="font-size:12px;color:var(--text3)"></span>
+    <button onclick="closeSearchPanel()">✕</button>
+  </div>
+  <div id="search-results-list"></div>
+</div>
+
+<!-- ═══════ CONTEXT MENU ═══════ -->
+<div id="ctx">
+  <div class="er" id="ctx-er"></div>
+  <div class="cx-sep"></div>
+  <div class="cxi" onclick="ctxCopy()">📋 Копіювати</div>
+  <div class="cxi" id="ctx-bk" onclick="ctxBookmark()">☆ Зберегти</div>
+  <div class="cxi" onclick="ctxPin()">📌 Закріпити</div>
+  <div class="cxi d" onclick="ctxDel()">🗑️ Видалити</div>
+</div>
+
+<!-- ═══════ CALL OVERLAY ═══════ -->
+<div id="call-ov">
+  <div class="call-av" id="c-av"></div>
+  <div class="call-name" id="c-nm"></div>
+  <div class="call-st"   id="c-st">Виклик...</div>
+  <div class="call-bts">
+    <button class="cb mic" id="mic-btn" onclick="togMic()">🎙️</button>
+    <button class="cb end" onclick="endCall()">📵</button>
+  </div>
+</div>
+
+<!-- ═══════ TOAST ═══════ -->
+<div id="toast"></div>
+
+<!-- ═══════ MODAL: New Chat ═══════ -->
+<div class="mov" id="nc-ov">
+  <div class="modal">
+    <h3>💬 Новий чат</h3>
+    <input class="mi2" id="nc-n" placeholder="Ім'я контакту"/>
+    <input class="mi2" id="nc-d" placeholder="Опис (необов'язково)"/>
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);margin-bottom:4px">
+      <input type="checkbox" id="nc-ai" style="accent-color:var(--acc)"/> Увімкнути AI-відповіді (Claude)
+    </label>
+    <div class="mbtns">
+      <button class="bg" onclick="closeAll()">Скасувати</button>
+      <button class="bp" onclick="createChat()">Створити ✨</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL: Rename ═══════ -->
+<div class="mov" id="rn-ov">
+  <div class="modal">
+    <h3>✏️ Перейменувати чат</h3>
+    <input class="mi2" id="rn-inp" placeholder="Нова назва"/>
+    <div class="mbtns">
+      <button class="bg" onclick="closeAll()">Скасувати</button>
+      <button class="bp" onclick="doRename()">Зберегти</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL: Chat Theme ═══════ -->
+<div class="mov" id="ct-ov">
+  <div class="modal">
+    <h3>🎨 Тема чату</h3>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:8px">Акцентний колір</p>
+    <div class="ct-row" id="ct-accents"></div>
+    <p style="font-size:12px;color:var(--text2);margin:14px 0 8px">Фон повідомлень</p>
+    <div class="ct-row ct-wps" id="ct-wallpapers"></div>
+    <div class="ct-img-row">
+      <button class="ct-img-btn" onclick="openWallpaperUpload()">Завантажити зображення</button>
+      <button class="ct-img-btn" onclick="removeWallpaperImage()" style="color:var(--danger)">Видалити фото</button>
+      <input type="file" id="wp-file-inp" accept="image/*" style="display:none" onchange="handleWallpaperUpload(this)"/>
+    </div>
+    <div class="mbtns" style="margin-top:16px">
+      <button class="bg" onclick="resetChatTheme()">♻️ Скинути</button>
+      <button class="bp" onclick="closeAll()">Готово ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL: Keyboard Shortcuts ═══════ -->
+<div class="mov" id="kb-ov">
+  <div class="modal">
+    <h3>⌨️ Клавіатурні скорочення</h3>
+    <div id="kb-list" style="margin-bottom:12px"></div>
+    <div class="mbtns">
+      <button class="bp" onclick="closeAll()">Закрити</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL: API Key ═══════ -->
+<div class="mov" id="api-ov">
+  <div class="modal">
+    <h3>Gemini API ключ</h3>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">Ключ зберігається тільки у вашому браузері. Google Gemini — безкоштовний.</p>
+    <div style="background:var(--bg3);border-radius:var(--rs);padding:10px;margin-bottom:12px;font-size:12px;color:var(--text2);line-height:1.7">
+      Як отримати ключ:<br>
+      1. Відкрийте <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--acc)">aistudio.google.com/apikey</a><br>
+      2. Натисніть <b style="color:var(--text)">Create API key</b><br>
+      3. Скопіюйте ключ — починається з <code style="color:var(--acc)">AIza</code><br>
+      4. Безкоштовний ліміт: 15 запитів/хвилину, 1500/день
+    </div>
+    <input class="mi2" id="api-inp" type="password" placeholder="AIzaSy..."/>
+    <div class="test-res" id="t-res"></div>
+    <div class="mbtns">
+      <button class="bg" id="t-btn" onclick="testKey()">Тест</button>
+      <button class="bg" onclick="closeAll()">Скасувати</button>
+      <button class="bp" onclick="saveKey()">Зберегти</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL: Profile ═══════ -->
+<div class="mov" id="prof-ov">
+  <div class="modal">
+    <h3>👤 Мій профіль</h3>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+      <div id="prof-av-preview"
+           onclick="document.getElementById('prof-av-inp').click()"
+           style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#ff4d8d,#c94dff);
+                  display:flex;align-items:center;justify-content:center;cursor:pointer;
+                  font-size:22px;font-weight:700;position:relative;overflow:hidden;
+                  border:2px solid var(--acc);flex-shrink:0"></div>
+      <div style="flex:1">
+        <p style="font-size:12.5px;color:var(--text2);margin-bottom:5px">Фото профілю</p>
+        <button onclick="document.getElementById('prof-av-inp').click()"
+                style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rs);
+                       padding:6px 12px;color:var(--text2);font-family:inherit;font-size:12px;cursor:pointer">
+          📷 Завантажити фото
+        </button>
+        <button id="rm-av-btn" onclick="removeAvatar()"
+                style="background:rgba(240,95,116,.1);border:1px solid rgba(240,95,116,.2);
+                       border-radius:var(--rs);padding:6px 12px;color:var(--danger);
+                       font-family:inherit;font-size:12px;cursor:pointer;margin-left:6px;display:none">
+          ✕ Видалити
+        </button>
+        <input type="file" id="prof-av-inp" accept="image/*" style="display:none" onchange="handleAvatarUpload(this)"/>
+      </div>
+    </div>
+    <input class="mi2" id="p-nm" placeholder="Ваше ім'я"/>
+    <input class="mi2" id="p-st" placeholder="Статус (напр. в зоні ✨)"/>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:8px">Колір аватара (якщо немає фото):</p>
+    <div class="cr" id="col-row"></div>
+    <div class="mbtns">
+      <button class="bg" onclick="closeAll()">Скасувати</button>
+      <button class="bp" onclick="saveProf()">Зберегти 💕</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SCRIPTS ═══════ -->
+<script src="js/constants.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/logo.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/sort.js"></script>
+<script src="js/formatter.js"></script>
+<script src="js/unread.js"></script>
+<script src="js/drafts.js"></script>
+<script src="js/bookmarks.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/search.js"></script>
+<script src="js/keyboard.js"></script>
+<script src="js/chat-theme.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/pin.js"></script>
+<script src="js/contacts.js"></script>
+<script src="js/messages.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/send.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/context-menu.js"></script>
+<script src="js/call.js"></script>
+<script src="js/modals.js"></script>
+<script src="js/emoji.js"></script>
+<script src="js/events.js"></script>
+</body>
+</html>

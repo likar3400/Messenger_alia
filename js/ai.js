@@ -109,3 +109,7 @@ function clearAiHistory() {
   renderCL();
   showToast('Контекст AI очищено');
 }
+
+function getContextWindow(cid) {
+  return S.chatThemes?.[cid]?.contextWindow ?? 12;
+}

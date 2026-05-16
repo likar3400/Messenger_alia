@@ -121,3 +121,17 @@ function setContextWindow(cid, size) {
   save();
   showToast(`Контекст AI: ${S.chatThemes[cid].contextWindow} повідомлень`);
 }
+
+function clearAiContext() {
+  if (!S.activeId) return;
+  const msgs = S.messages[S.activeId] || [];
+  msgs.push({
+    id: Date.now(), from: 'system',
+    text: '--- контекст очищено ---',
+    ts: Date.now(), reactions: {},
+  });
+  S.messages[S.activeId] = msgs;
+  save();
+  renderMsgs();
+  showToast('Контекст AI очищено');
+}

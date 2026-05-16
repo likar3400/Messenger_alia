@@ -124,3 +124,12 @@ function getNotificationStatus() {
     permission:    ('Notification' in window) ? Notification.permission : 'unsupported',
   };
 }
+
+function resetNotifPrefs() {
+  S.notificationsEnabled = false;
+  S.soundEnabled         = true;
+  save();
+  _updateNotifBtn();
+  _updateSoundBtn();
+  showToast('Налаштування сповіщень скинуто');
+}

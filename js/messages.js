@@ -104,3 +104,16 @@ function renderMsgs() {
   wrap.innerHTML  = html;
   wrap.scrollTop  = wrap.scrollHeight;
 }
+
+function getMessagesByCid(cid, limit = 50) {
+  const all = (S.messages[cid] || []);
+  return limit ? all.slice(-limit) : all;
+}
+
+function countMessagesByCid(cid) {
+  return (S.messages[cid] || []).length;
+}
+
+function getMediaMessages(cid) {
+  return (S.messages[cid] || []).filter(m => m.type === 'file' || m.type === 'voice');
+}

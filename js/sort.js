@@ -76,3 +76,11 @@ document.addEventListener('click', e => {
 function getAvailableSortModes() {
   return Object.keys(SORT_LABELS).map(key => ({ key, label: SORT_LABELS[key] }));
 }
+
+function getSortStats() {
+  return {
+    mode:    S.sortMode || 'newest',
+    label:   currentSortLabel(),
+    total:   (S.contacts || []).length,
+  };
+}

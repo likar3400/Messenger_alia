@@ -54,6 +54,11 @@
     <label class="data-btn" style="text-align:center;cursor:pointer">Імпорт<input type="file" accept=".json" style="display:none" onchange="importData(this.files[0])"/></label>
     <button class="data-btn" onclick="clearAll()" style="color:var(--danger)">Скинути</button>
   </div>
+  <div class="data-btns">
+    <button class="data-btn" onclick="exportData()">Експорт</button>
+    <label class="data-btn" style="text-align:center;cursor:pointer">Імпорт<input type="file" accept=".json" style="display:none" onchange="importData(this.files[0])"/></label>
+    <button class="data-btn" onclick="clearAll()" style="color:var(--danger)">Скинути</button>
+  </div>
   <button class="new-btn" onclick="openNewModal()">
     <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     Новий чат

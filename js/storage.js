@@ -61,3 +61,13 @@ function clearAll() {
   location.reload();
   return true;
 }
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `delulu_backup_${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('Дані експортовано');
+}

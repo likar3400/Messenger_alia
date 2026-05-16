@@ -113,3 +113,7 @@ function getMessagesByCid(cid, limit = 50) {
 function countMessagesByCid(cid) {
   return (S.messages[cid] || []).length;
 }
+
+function getMediaMessages(cid) {
+  return (S.messages[cid] || []).filter(m => m.type === 'file' || m.type === 'voice');
+}

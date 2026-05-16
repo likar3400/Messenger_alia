@@ -126,3 +126,9 @@ function getBookmarksByDate(dateStr) {
     return d.toISOString().slice(0, 10) === dateStr;
   });
 }
+
+function sortedBookmarks(by = 'savedAt') {
+  const valid = ['savedAt', 'ts'];
+  const field = valid.includes(by) ? by : 'savedAt';
+  return [...(S.bookmarks || [])].sort((a, b) => b[field] - a[field]);
+}

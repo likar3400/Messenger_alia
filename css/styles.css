@@ -512,3 +512,12 @@ body.theme-transitioning * {
   transition: background .12s;
 }
 .data-btn:hover { background: var(--bg4); color: var(--text); }
+
+.data-btns { display:flex; gap:6px; padding:6px 12px 4px; }
+.data-btn {
+  flex:1; background:var(--bg3); border:1px solid var(--border2);
+  border-radius:7px; padding:5px 8px; font-size:11px;
+  color:var(--text2); cursor:pointer; font-family:inherit;
+  transition:background .12s;
+}
+.data-btn:hover { background:var(--bg4); color:var(--text); }

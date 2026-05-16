@@ -109,3 +109,7 @@ function getMessagesByCid(cid, limit = 50) {
   const all = (S.messages[cid] || []);
   return limit ? all.slice(-limit) : all;
 }
+
+function countMessagesByCid(cid) {
+  return (S.messages[cid] || []).length;
+}

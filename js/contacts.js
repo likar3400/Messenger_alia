@@ -76,3 +76,12 @@ function renderMyProf() {
   document.getElementById('my-name-lbl').textContent = S.myName   || 'Мій профіль';
   document.getElementById('my-st-lbl').textContent   = S.myStatus || 'Встановити статус...';
 }
+
+function getOnlineCount() {
+  return (S.contacts || []).filter(c => c.online).length;
+}
+
+function findContactsByName(query) {
+  const q = query.toLowerCase();
+  return (S.contacts || []).filter(c => c.name.toLowerCase().includes(q));
+}

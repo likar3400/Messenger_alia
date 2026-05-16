@@ -116,3 +116,11 @@ function getNotificationStatus() {
     permission:    ('Notification' in window) ? Notification.permission : 'unsupported',
   };
 }
+
+function getNotificationStatus() {
+  return {
+    notifications: S.notificationsEnabled,
+    sound:         S.soundEnabled,
+    permission:    ('Notification' in window) ? Notification.permission : 'unsupported',
+  };
+}

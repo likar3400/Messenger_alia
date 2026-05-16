@@ -104,3 +104,8 @@ function renderMsgs() {
   wrap.innerHTML  = html;
   wrap.scrollTop  = wrap.scrollHeight;
 }
+
+function getMessagesByCid(cid, limit = 50) {
+  const all = (S.messages[cid] || []);
+  return limit ? all.slice(-limit) : all;
+}

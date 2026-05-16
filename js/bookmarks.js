@@ -119,3 +119,16 @@ function showToast(msg) {
   clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 }
+
+function getBookmarksByDate(dateStr) {
+  return (S.bookmarks || []).filter(b => {
+    const d = new Date(b.savedAt);
+    return d.toISOString().slice(0, 10) === dateStr;
+  });
+}
+
+function sortedBookmarks(by = 'savedAt') {
+  const valid = ['savedAt', 'ts'];
+  const field = valid.includes(by) ? by : 'savedAt';
+  return [...(S.bookmarks || [])].sort((a, b) => b[field] - a[field]);
+}

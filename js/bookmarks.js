@@ -110,16 +110,6 @@ function _bkDate(ts) {
   return `${d.getDate()}.${String(d.getMonth() + 1).padStart(2, '0')}`;
 }
 
-let _toastTimer = null;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  if (!t) return;
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
-}
-
 function getBookmarksByDate(dateStr) {
   return (S.bookmarks || []).filter(b => {
     const d = new Date(b.savedAt);

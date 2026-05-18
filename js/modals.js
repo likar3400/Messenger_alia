@@ -40,16 +40,14 @@ function openProfModal() {
 function updProfAvPreview() {
   const prev  = document.getElementById('prof-av-preview');
   const rmBtn = document.getElementById('rm-av-btn');
+  const [bg, fg] = AVC[S.myColor % AVC.length];
 
   if (S.myAvatar) {
-    prev.innerHTML       = `<img src="${S.myAvatar}" style="width:100%;height:100%;object-fit:cover" alt=""/>`;
-    rmBtn.style.display  = 'inline-block';
+    prev.innerHTML = buildAvatarHTML(ini(S.myName || 'Я'), bg, fg, S.myAvatar, '100%', '100%', '16px');
+    rmBtn.style.display = 'inline-block';
   } else {
-    const [bg, fg]        = AVC[S.myColor % AVC.length];
-    prev.style.background = bg;
-    prev.style.color      = fg;
-    prev.textContent      = ini(S.myName || 'Я');
-    rmBtn.style.display   = 'none';
+    prev.innerHTML = buildAvatarHTML(ini(S.myName || 'Я'), bg, fg, null, '100%', '100%', '16px');
+    rmBtn.style.display = 'none';
   }
 }
 

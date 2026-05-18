@@ -13,8 +13,8 @@ function openChat(id) {
 
   const [bg, fg] = ac(id);
   const hav = document.getElementById('h-av');
-  hav.innerHTML  = `${ini(c.name)}<span class="dot ${c.online ? 'on' : 'off'}"></span>`;
-  hav.style.cssText = `background:${bg};color:${fg};width:36px;height:36px;font-size:12px`;
+  const avatarHtml = buildAvatarHTML(ini(c.name), bg, fg, null, '36px', '36px', '12px');
+  hav.innerHTML  = avatarHtml + `<span class="dot ${c.online ? 'on' : 'off'}" style="position:absolute;right:-4px;bottom:-4px"></span>`;
 
   document.getElementById('h-nm').textContent = c.name;
   document.getElementById('h-st').textContent = c.online ? '● Онлайн' : 'Офлайн';

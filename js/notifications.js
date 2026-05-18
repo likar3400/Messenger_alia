@@ -90,31 +90,36 @@ function _playBeep() {
   }
 }
 
-function _updateNotifBtn() {
-  const btn = document.getElementById('notif-btn');
+function _updateToggleBtn(id, enabled, onText, offText, onTitle, offTitle) {
+  const btn = document.getElementById(id);
   if (!btn) return;
-  btn.textContent = S.notificationsEnabled ? '🔔' : '🔕';
-  btn.title       = S.notificationsEnabled ? 'Вимкнути сповіщення' : 'Увімкнути сповіщення';
+  btn.textContent = enabled ? onText  : offText;
+  btn.title       = enabled ? onTitle : offTitle;
+}
+
+function _updateNotifBtn() {
+  _updateToggleBtn(
+    'notif-btn',
+    S.notificationsEnabled,
+    '🔔', '🔕',
+    'Вимкнути сповіщення',
+    'Увімкнути сповіщення'
+  );
 }
 
 function _updateSoundBtn() {
-  const btn = document.getElementById('sound-btn');
-  if (!btn) return;
-  btn.textContent = S.soundEnabled ? '🔊' : '🔇';
-  btn.title       = S.soundEnabled ? 'Вимкнути звук' : 'Увімкнути звук';
+  _updateToggleBtn(
+    'sound-btn',
+    S.soundEnabled,
+    '🔊', '🔇',
+    'Вимкнути звук',
+    'Увімкнути звук'
+  );
 }
 
 function initNotifications() {
   _updateNotifBtn();
   _updateSoundBtn();
-}
-
-function getNotificationStatus() {
-  return {
-    notifications: S.notificationsEnabled,
-    sound:         S.soundEnabled,
-    permission:    ('Notification' in window) ? Notification.permission : 'unsupported',
-  };
 }
 
 function getNotificationStatus() {

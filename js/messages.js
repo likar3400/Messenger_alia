@@ -68,6 +68,40 @@ function buildReacts(rxs, mid) {
   return pills ? `<div class="reacts">${pills}</div>` : '';
 }
 
+class BubbleStrategy {
+  build(m, isOut) { throw new Error('Not implemented'); }
+}
+
+class TextBubbleStrategy extends BubbleStrategy {
+  build(m, isOut) { return buildTextBubble(m, isOut); }
+}
+
+class FileBubbleStrategy extends BubbleStrategy {
+  build(m, isOut) { return buildFileBubble(m); }
+}
+
+class VoiceBubbleStrategy extends BubbleStrategy {
+  build(m, isOut) { return typeof buildVoiceBubble === 'function' ? buildVoiceBubble(m) : buildTextBubble(m, isOut); }
+}
+
+class MessageBubbleContext {
+  constructor() {
+    this.strategies = {
+      text: new TextBubbleStrategy(),
+      file: new FileBubbleStrategy(),
+      voice: new VoiceBubbleStrategy(),
+    };
+    this.defaultStrategy = new TextBubbleStrategy();
+  }
+
+  buildBubble(m, isOut) {
+    const strategy = this.strategies[m.type] || this.defaultStrategy;
+    return strategy.build(m, isOut);
+  }
+}
+
+const messageBubbleContext = new MessageBubbleContext();
+
 function renderMsgs() {
   const wrap = document.getElementById('mw');
   const msgs = S.messages[S.activeId] || [];
@@ -80,11 +114,7 @@ function renderMsgs() {
   msgs.forEach(m => {
     const isOut  = m.from === 'out';
     const reacts = buildReacts(m.reactions || {}, m.id);
-    const inner  = m.type === 'file'
-      ? buildFileBubble(m)
-      : m.type === 'voice'
-        ? buildVoiceBubble(m)
-        : buildTextBubble(m, isOut);
+    const inner  = messageBubbleContext.buildBubble(m, isOut);
 
     if (isOut) {
       const myAvHtml = S.myAvatar

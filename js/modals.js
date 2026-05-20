@@ -40,15 +40,30 @@ function openProfModal() {
 function updProfAvPreview() {
   const prev  = document.getElementById('prof-av-preview');
   const rmBtn = document.getElementById('rm-av-btn');
+  const [bg, fg] = AVC[S.myColor % AVC.length];
 
   if (S.myAvatar) {
-    prev.innerHTML       = `<img src="${S.myAvatar}" style="width:100%;height:100%;object-fit:cover" alt=""/>`;
+    prev.innerHTML = buildAvatarHTML({
+      name: S.myName || 'Я',
+      avatar: S.myAvatar,
+      className: '',
+      size: 100,
+      fontSize: 28,
+      bg,
+      fg,
+      extraStyle: 'width:100%;height:100%',
+    });
     rmBtn.style.display  = 'inline-block';
   } else {
-    const [bg, fg]        = AVC[S.myColor % AVC.length];
-    prev.style.background = bg;
-    prev.style.color      = fg;
-    prev.textContent      = ini(S.myName || 'Я');
+    prev.innerHTML = buildAvatarHTML({
+      name: S.myName || 'Я',
+      className: '',
+      size: 100,
+      fontSize: 28,
+      bg,
+      fg,
+      extraStyle: 'width:100%;height:100%',
+    });
     rmBtn.style.display   = 'none';
   }
 }

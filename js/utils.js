@@ -31,3 +31,28 @@ function esc(t) {
     .replace(/>/g, '&gt;')
     .replace(/\n/g, '<br>');
 }
+
+/**
+ * Builds HTML for an avatar element with initials or image.
+ * Eliminates repeated avatar HTML generation across contacts.js, messages.js, modals.js.
+ * @param {string} initials - Text to display (user initials)
+ * @param {string} bgColor - Background color (hex or CSS var)
+ * @param {string} fgColor - Foreground/text color
+ * @param {string} avatarImageUrl - Optional image URL; if present, displays image instead of initials
+ * @param {string} width - CSS width (default '36px')
+ * @param {string} height - CSS height (default '36px')
+ * @param {string} fontSize - CSS font-size (default '12px')
+ * @returns {string} HTML string for the avatar div
+ */
+function buildAvatarHTML(initials, bgColor, fgColor, avatarImageUrl, width = '36px', height = '36px', fontSize = '12px') {
+  const styles = `width:${width};height:${height};font-size:${fontSize};background:${bgColor};color:${fgColor}`;
+
+  if (avatarImageUrl) {
+    return `<div class="av" style="${styles};padding:0;overflow:hidden">
+      <img src="${avatarImageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt=""/>
+    </div>`;
+  }
+
+  return `<div class="av" style="${styles}">${initials}</div>`;
+}
+

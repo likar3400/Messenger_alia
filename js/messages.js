@@ -117,17 +117,11 @@ function renderMsgs() {
     const inner  = messageBubbleContext.buildBubble(m, isOut);
 
     if (isOut) {
-      const myAvHtml = S.myAvatar
-        ? `<div class="mav" style="background:${mbg};color:${mfg};padding:0;overflow:hidden">
-             <img src="${S.myAvatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt=""/>
-           </div>`
-        : `<div class="mav" style="background:${mbg};color:${mfg}">${ini(S.myName || 'Я')}</div>`;
+      const myAvHtml = buildAvatarHTML(ini(S.myName || 'Я'), mbg, mfg, S.myAvatar);
       html += `<div class="mr out" data-mid="${m.id}">${myAvHtml}<div>${inner}${reacts}</div></div>`;
     } else {
-      html += `<div class="mr in" data-mid="${m.id}">
-        <div class="mav" style="background:${cbg};color:${cfg}">${ini(c ? c.name : '?')}</div>
-        <div>${inner}${reacts}</div>
-      </div>`;
+      const contactAvHtml = buildAvatarHTML(ini(c ? c.name : '?'), cbg, cfg, null);
+      html += `<div class="mr in" data-mid="${m.id}">${contactAvHtml}<div>${inner}${reacts}</div></div>`;
     }
   });
 

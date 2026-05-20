@@ -31,3 +31,37 @@ function esc(t) {
     .replace(/>/g, '&gt;')
     .replace(/\n/g, '<br>');
 }
+
+function buildAvatarHTML({
+  name = '?',
+  id = 0,
+  elementId = '',
+  avatar = '',
+  className = 'av',
+  size = 36,
+  fontSize = 12,
+  showDot = false,
+  online = false,
+  bg = null,
+  fg = null,
+  extraStyle = '',
+} = {}) {
+  const [autoBg, autoFg] = ac(id);
+  const finalBg = bg || autoBg;
+  const finalFg = fg || autoFg;
+  const cls = className ? ` class="${className}"` : '';
+  const idAttr = elementId ? ` id="${elementId}"` : '';
+  const baseStyle = `width:${size}px;height:${size}px;font-size:${fontSize}px;background:${finalBg};color:${finalFg}`;
+  const fullStyle = extraStyle ? `${baseStyle};${extraStyle}` : baseStyle;
+
+  if (avatar) {
+    return `<div${idAttr}${cls} style="${fullStyle};padding:0;overflow:hidden">
+      <img src="${avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt=""/>
+      ${showDot ? `<span class="dot ${online ? 'on' : 'off'}"></span>` : ''}
+    </div>`;
+  }
+
+  return `<div${idAttr}${cls} style="${fullStyle}">
+    ${ini(name)}${showDot ? `<span class="dot ${online ? 'on' : 'off'}"></span>` : ''}
+  </div>`;
+}

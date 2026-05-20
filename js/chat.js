@@ -11,10 +11,18 @@ function openChat(id) {
   const cv = document.getElementById('cv');
   cv.style.display = 'flex';
 
-  const [bg, fg] = ac(id);
   const hav = document.getElementById('h-av');
-  hav.innerHTML  = `${ini(c.name)}<span class="dot ${c.online ? 'on' : 'off'}"></span>`;
-  hav.style.cssText = `background:${bg};color:${fg};width:36px;height:36px;font-size:12px`;
+  hav.outerHTML = buildAvatarHTML({
+    name: c.name,
+    id,
+    elementId: 'h-av',
+    className: 'av',
+    size: 36,
+    fontSize: 12,
+    showDot: true,
+    online: c.online,
+    extraStyle: 'flex-shrink:0',
+  });
 
   document.getElementById('h-nm').textContent = c.name;
   document.getElementById('h-st').textContent = c.online ? '● Онлайн' : 'Офлайн';

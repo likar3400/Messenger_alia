@@ -106,7 +106,6 @@ function renderMsgs() {
   const wrap = document.getElementById('mw');
   const msgs = S.messages[S.activeId] || [];
   const c    = (S.contacts || []).find(x => x.id === S.activeId);
-  const [cbg, cfg] = ac(S.activeId);
   const [mbg, mfg] = AVC[S.myColor % AVC.length];
 
   let html = `<div class="dd">${todayS()}</div>`;
@@ -117,15 +116,19 @@ function renderMsgs() {
     const inner  = messageBubbleContext.buildBubble(m, isOut);
 
     if (isOut) {
-      const myAvHtml = S.myAvatar
-        ? `<div class="mav" style="background:${mbg};color:${mfg};padding:0;overflow:hidden">
-             <img src="${S.myAvatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt=""/>
-           </div>`
-        : `<div class="mav" style="background:${mbg};color:${mfg}">${ini(S.myName || 'Я')}</div>`;
+      const myAvHtml = buildAvatarHTML({
+        name: S.myName || 'Я',
+        avatar: S.myAvatar || '',
+        className: 'mav',
+        size: 26,
+        fontSize: 9,
+        bg: mbg,
+        fg: mfg,
+      });
       html += `<div class="mr out" data-mid="${m.id}">${myAvHtml}<div>${inner}${reacts}</div></div>`;
     } else {
       html += `<div class="mr in" data-mid="${m.id}">
-        <div class="mav" style="background:${cbg};color:${cfg}">${ini(c ? c.name : '?')}</div>
+        ${buildAvatarHTML({ name: c ? c.name : '?', id: S.activeId, className: 'mav', size: 26, fontSize: 9 })}
         <div>${inner}${reacts}</div>
       </div>`;
     }

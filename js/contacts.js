@@ -43,13 +43,10 @@ function renderCL(filter = '') {
     }
 
     const tl       = last ? tstr(last.ts) : '';
-    const [bg, fg] = ac(c.id);
     const isActive = S.activeId === c.id;
 
     return `<div class="ci${isActive ? ' act' : ''}" onclick="openChat(${c.id})">
-      <div class="av" style="width:44px;height:44px;background:${bg};color:${fg};font-size:15px">
-        ${ini(c.name)}<span class="dot ${c.online ? 'on' : 'off'}"></span>
-      </div>
+      ${buildAvatarHTML({ name: c.name, id: c.id, className: 'av', size: 44, fontSize: 15, showDot: true, online: c.online })}
       <div class="cif">
         <div class="cn">${esc(c.name)}</div>
         <div class="cp">${draft ? prev : esc(prev)}</div>
@@ -66,13 +63,17 @@ function renderCL(filter = '') {
 function renderMyProf() {
   const [bg, fg] = AVC[S.myColor % AVC.length];
   const av = document.getElementById('my-av');
-  if (S.myAvatar) {
-    av.style.cssText = `width:36px;height:36px;font-size:12px;background:${bg};color:${fg};padding:0;overflow:hidden`;
-    av.innerHTML = `<img src="${S.myAvatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt=""/>`;
-  } else {
-    av.style.cssText = `width:36px;height:36px;font-size:12px;background:${bg};color:${fg}`;
-    av.textContent   = ini(S.myName || 'Я');
-  }
+  av.outerHTML = buildAvatarHTML({
+    name: S.myName || 'Я',
+    avatar: S.myAvatar || '',
+    elementId: 'my-av',
+    className: 'av',
+    size: 36,
+    fontSize: 12,
+    bg,
+    fg,
+    extraStyle: 'flex-shrink:0',
+  });
   document.getElementById('my-name-lbl').textContent = S.myName   || 'Мій профіль';
   document.getElementById('my-st-lbl').textContent   = S.myStatus || 'Встановити статус...';
 }
